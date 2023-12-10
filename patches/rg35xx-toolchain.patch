@@ -1,0 +1,13 @@
+diff --git a/Dockerfile b/Dockerfile
+index 3f75538..7928097 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -39,4 +39,6 @@ RUN cat ./setup-env.sh >> .bashrc
+ VOLUME /root/workspace
+ WORKDIR /root/workspace
+
+-CMD ["/bin/bash"]
+\ No newline at end of file
++RUN git config --global --add safe.directory '*'
++
++CMD ["/bin/bash"]
