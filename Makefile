@@ -28,13 +28,13 @@ all: $(MINUI_PATH) toolchains
 clean:
 	rm -rf $(MINUI_PATH)
 
-take-patch: take-patch-minui
+patch-generate: patch-generate-minui
 
-take-patch-minui:
+patch-generate-minui:
 	git -C $(MINUI_PATH) diff --minimal --ignore-all-space > patches/MinUI.patch
 
-gather-phrases:
-	go run gather_phrases.go
+phrases-gather:
+	go run cmd/gather_phrases/main.go
 
 $(MINUI_PATH):
 	git clone https://github.com/shauninman/MinUI $@
