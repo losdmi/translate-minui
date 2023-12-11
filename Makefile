@@ -28,6 +28,14 @@ all: $(MINUI_PATH) toolchains
 clean:
 	rm -rf $(MINUI_PATH)
 
+take-patch: take-patch-minui
+
+take-patch-minui:
+	git -C $(MINUI_PATH) diff --minimal --ignore-all-space > patches/MinUI.patch
+
+gather-phrases:
+	go run gather_phrases.go
+
 $(MINUI_PATH):
 	git clone https://github.com/shauninman/MinUI $@
 	git -C $@ checkout $(shell cat ./hash-minui.txt)
@@ -38,4 +46,3 @@ toolchains: clone-toolchains patch-toolchains
 clone-toolchains: $(foreach PLATFORM,$(PLATFORMS),$(MINUI_PATH)/toolchains/$(PLATFORM)-toolchain)
 patch-toolchains: $(foreach PLATFORM,$(PLATFORMS),$(MINUI_PATH)/toolchains/$(PLATFORM)-toolchain/.patched)
 # build-toolchains: $(foreach PLATFORM,$(PLATFORMS),$(MINUI_PATH)/toolchains/$(PLATFORM)-toolchain/.build)
-

@@ -1,0 +1,94 @@
+diff --git a/workspace/all/common/api.c b/workspace/all/common/api.c
+index f15f619..1c60fc7 100644
+--- a/workspace/all/common/api.c
++++ b/workspace/all/common/api.c
+@@ -1469,8 +1469,8 @@ void PWR_powerOff(void) {
+ 		gfx.screen = GFX_resize(w,h,p);
+ 		
+ 		char* msg;
+-		if (HAS_POWER_BUTTON || HAS_POWEROFF_BUTTON) msg = exists(AUTO_RESUME_PATH) ? "Quicksave created,\npowering off" : "Powering off";
+-		else msg = exists(AUTO_RESUME_PATH) ? "Quicksave created,\npower off now" : "Power off now";
++		if (HAS_POWER_BUTTON || HAS_POWEROFF_BUTTON) msg = exists(AUTO_RESUME_PATH) ? "{{Quicksave created,\npowering off}}" : "{{Powering off}}";
++		else msg = exists(AUTO_RESUME_PATH) ? "{{Quicksave created,\npower off now}}" : "{{Power off now}}";
+ 		
+ 		// LOG_info("PWR_powerOff %s (%ix%i)\n", gfx.screen, gfx.screen->w, gfx.screen->h);
+ 		
+diff --git a/workspace/all/common/defines.h b/workspace/all/common/defines.h
+index 53b782f..7b5c8e8 100644
+--- a/workspace/all/common/defines.h
++++ b/workspace/all/common/defines.h
+@@ -23,7 +23,7 @@
+ #define AUTO_RESUME_PATH SHARED_USERDATA_PATH "/.minui/auto_resume.txt"
+ #define AUTO_RESUME_SLOT 9
+ 
+-#define FAUX_RECENT_PATH SDCARD_PATH "/Recently Played"
++#define FAUX_RECENT_PATH SDCARD_PATH "/{{Recently Played}}"
+ #define COLLECTIONS_PATH SDCARD_PATH "/Collections"
+ 
+ #define LAST_PATH "/tmp/last.txt" // transient
+diff --git a/workspace/all/minarch/minarch.c b/workspace/all/minarch/minarch.c
+index 78bffae..3db7f29 100644
+--- a/workspace/all/minarch/minarch.c
++++ b/workspace/all/minarch/minarch.c
+@@ -3754,8 +3754,8 @@ static void Menu_loop(void) {
+ 			SDL_FreeSurface(text);
+ 			
+ 			if (show_setting && !GetHDMI()) GFX_blitHardwareHints(screen, show_setting);
+-			else GFX_blitButtonGroup((char*[]){ BTN_SLEEP==BTN_POWER?"POWER":"MENU","SLEEP", NULL }, 0, screen, 0);
+-			GFX_blitButtonGroup((char*[]){ "B","BACK", "A","OKAY", NULL }, 1, screen, 1);
++			else GFX_blitButtonGroup((char*[]){ BTN_SLEEP==BTN_POWER?"{{POWER}}":"{{MENU}}","{{SLEEP}}", NULL }, 0, screen, 0);
++			GFX_blitButtonGroup((char*[]){ "B","{{BACK}}", "A","{{OKAY}}", NULL }, 1, screen, 1);
+ 			
+ 			// list
+ 			oy = (((DEVICE_HEIGHT / FIXED_SCALE) - PADDING * 2) - (MENU_ITEM_COUNT * PILL_SIZE)) / 2;
+@@ -3844,8 +3844,8 @@ static void Menu_loop(void) {
+ 				else {
+ 					SDL_Rect preview_rect = {ox,oy,hw,hh};
+ 					SDL_FillRect(screen, &preview_rect, 0);
+-					if (menu.save_exists) GFX_blitMessage(font.large, "No Preview", screen, &preview_rect);
+-					else GFX_blitMessage(font.large, "Empty Slot", screen, &preview_rect);
++					if (menu.save_exists) GFX_blitMessage(font.large, "{{No Preview}}", screen, &preview_rect);
++					else GFX_blitMessage(font.large, "{{Empty Slot}}", screen, &preview_rect);
+ 				}
+ 				
+ 				// pagination
+diff --git a/workspace/all/minui/minui.c b/workspace/all/minui/minui.c
+index 6e34ba9..8d82ad6 100644
+--- a/workspace/all/minui/minui.c
++++ b/workspace/all/minui/minui.c
+@@ -1461,28 +1461,28 @@ int main (int argc, char *argv[]) {
+ 				}
+ 				else {
+ 					// TODO: for some reason screen's dimensions end up being 0x0 in GFX_blitMessage...
+-					GFX_blitMessage(font.large, "Empty folder", screen, &(SDL_Rect){0,0,screen->w,screen->h}); //, NULL);
++					GFX_blitMessage(font.large, "{{Empty folder}}", screen, &(SDL_Rect){0,0,screen->w,screen->h}); //, NULL);
+ 				}
+ 			
+ 				// buttons
+ 				if (show_setting && !GetHDMI()) GFX_blitHardwareHints(screen, show_setting);
+-				else if (can_resume) GFX_blitButtonGroup((char*[]){ "X","RESUME",  NULL }, 0, screen, 0);
++				else if (can_resume) GFX_blitButtonGroup((char*[]){ "X","{{RESUME}}",  NULL }, 0, screen, 0);
+ 				else GFX_blitButtonGroup((char*[]){ 
+-					BTN_SLEEP==BTN_POWER?"POWER":"MENU",
+-					BTN_SLEEP==BTN_POWER||simple_mode?"SLEEP":"INFO",  
++					BTN_SLEEP==BTN_POWER?"{{POWER}}":"{{MENU}}",
++					BTN_SLEEP==BTN_POWER||simple_mode?"{{SLEEP}}":"{{INFO}}",
+ 					NULL }, 0, screen, 0);
+ 			
+ 				if (total==0) {
+ 					if (stack->count>1) {
+-						GFX_blitButtonGroup((char*[]){ "B","BACK",  NULL }, 0, screen, 1);
++						GFX_blitButtonGroup((char*[]){ "B","{{BACK}}",  NULL }, 0, screen, 1);
+ 					}
+ 				}
+ 				else {
+ 					if (stack->count>1) {
+-						GFX_blitButtonGroup((char*[]){ "B","BACK", "A","OPEN", NULL }, 1, screen, 1);
++						GFX_blitButtonGroup((char*[]){ "B","{{BACK}}", "A","{{OPEN}}", NULL }, 1, screen, 1);
+ 					}
+ 					else {
+-						GFX_blitButtonGroup((char*[]){ "A","OPEN", NULL }, 0, screen, 1);
++						GFX_blitButtonGroup((char*[]){ "A","{{OPEN}}", NULL }, 0, screen, 1);
+ 					}
+ 				}
+ 			}
