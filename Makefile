@@ -2,7 +2,12 @@ ifeq ($(PLATFORMS),)
 PLATFORMS := rg35xx
 endif
 
+ifeq ($(LANG),)
+LANG := RU
+endif
+
 MINUI_PATH := ./MinUI
+TRANSLATION_PATCH_PATH := patches/MinUI-$(LANG).patch
 
 # === <TOOLCHAIN_TEMPLATE> ===
 define TOOLCHAIN_TEMPLATE
@@ -22,19 +27,31 @@ endef
 
 # === === === === === === === ===
 
-all: $(MINUI_PATH) toolchains
+build: $(MINUI_PATH) toolchains
 	PLATFORMS=$(PLATFORMS) $(MAKE) -C $(MINUI_PATH)
+	$(MAKE) open
 
 clean:
 	rm -rf $(MINUI_PATH)
 
-patch-generate: patch-generate-minui
+translation-build-template: patch-gather phrases-gather
 
-patch-generate-minui:
+patch-gather:
 	git -C $(MINUI_PATH) diff --minimal --ignore-all-space > patches/MinUI.patch
 
 phrases-gather:
 	go run cmd/gather_phrases/main.go
+
+translation-build-patch:
+	go run cmd/generate_translation_patch/main.go $(LANG)
+
+translation-apply: $(MINUI_PATH)/.translated
+
+$(MINUI_PATH)/.translated: $(TRANSLATION_PATCH_PATH)
+	(test ! -f $(TRANSLATION_PATCH_PATH)) || (test -f $(MINUI_PATH)/.translated) || (git -C $(MINUI_PATH) checkout -f HEAD && git -C $(MINUI_PATH) apply  -p1 < $(TRANSLATION_PATCH_PATH) && touch $@ && true)
+
+open:
+	open $(MINUI_PATH)/build/BASE
 
 $(MINUI_PATH):
 	git clone https://github.com/shauninman/MinUI $@
