@@ -1,18 +1,25 @@
 {
   "BACK": "BACK",
+  "BRIGHTNESS": "BRIGHTNESS",
+  "Continue": "Continue",
   "Empty Slot": "Empty Slot",
   "Empty folder": "Empty folder",
   "INFO": "INFO",
+  "Load": "Load",
   "MENU": "MENU",
   "No Preview": "No Preview",
   "OKAY": "OKAY",
   "OPEN": "OPEN",
+  "Options": "Options",
   "POWER": "POWER",
   "Power off now": "Power off now",
   "Powering off": "Powering off",
   "Quicksave created,\npower off now": "Quicksave created,\npower off now",
   "Quicksave created,\npowering off": "Quicksave created,\npowering off",
+  "Quit": "Quit",
   "RESUME": "RESUME",
   "Recently Played": "Recently Played",
-  "SLEEP": "SLEEP"
+  "Reset": "Reset",
+  "SLEEP": "SLEEP",
+  "Save": "Save"
 }

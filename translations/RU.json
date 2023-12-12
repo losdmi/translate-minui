@@ -1,18 +1,25 @@
 {
   "BACK": "НАЗАД",
+  "BRIGHTNESS": "ЯРКОСТЬ",
+  "Continue": "Продолжить",
   "Empty Slot": "Пустой слот",
   "Empty folder": "Пустая папка",
   "INFO": "ИНФО",
+  "Load": "Загрузить",
   "MENU": "MENU",
   "No Preview": "Нет картинки",
   "OKAY": "ОКЕЙ",
   "OPEN": "ОТКРЫТЬ",
+  "Options": "Опции",
   "POWER": "POWER",
   "Power off now": "Теперь можно выключить",
   "Powering off": "Выключаюсь",
   "Quicksave created,\npower off now": "Быстрое сохранение создано,\nтеперь можно выключить",
   "Quicksave created,\npowering off": "Быстрое сохранение создано,\nвыключаюсь",
+  "Quit": "Выход",
   "RESUME": "ПРОДОЛЖИТЬ",
   "Recently Played": "Недавние игры",
-  "SLEEP": "СОН"
+  "Reset": "Сбросить игру",
+  "SLEEP": "СОН",
+  "Save": "Сохранить"
 }

@@ -47,8 +47,12 @@ translation-build-patch:
 
 translation-apply: $(MINUI_PATH)/.translated
 
+patch-apply-template:
+	git -C $(MINUI_PATH) apply  -p1 < patches/MinUI.patch
+
 $(MINUI_PATH)/.translated: $(TRANSLATION_PATCH_PATH)
 	(test ! -f $(TRANSLATION_PATCH_PATH)) || (test -f $(MINUI_PATH)/.translated) || (git -C $(MINUI_PATH) checkout -f HEAD && git -C $(MINUI_PATH) apply  -p1 < $(TRANSLATION_PATCH_PATH) && touch $@ && true)
+	cp MPLUSRounded1c-ExtraBold.ttf $@/skeleton/SYSTEM/res/
 
 open:
 	open $(MINUI_PATH)/build/BASE

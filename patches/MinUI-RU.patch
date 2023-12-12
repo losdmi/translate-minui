@@ -1,7 +1,22 @@
 diff --git a/workspace/all/common/api.c b/workspace/all/common/api.c
-index f15f619..1c60fc7 100644
+index f15f619..608274b 100644
 --- a/workspace/all/common/api.c
 +++ b/workspace/all/common/api.c
+@@ -764,11 +764,11 @@ int GFX_blitHardwareGroup(SDL_Surface* dst, int show_setting) {
+ void GFX_blitHardwareHints(SDL_Surface* dst, int show_setting) {
+ 	if (BTN_MOD_VOLUME==BTN_SELECT && BTN_MOD_BRIGHTNESS==BTN_START) {
+ 		if (show_setting==1) GFX_blitButtonGroup((char*[]){ "SELECT","VOLUME",  NULL }, 0, dst, 0);
+-		else GFX_blitButtonGroup((char*[]){ "START","BRIGHTNESS",  NULL }, 0, dst, 0);
++		else GFX_blitButtonGroup((char*[]){ "START","ЯРКОСТЬ",  NULL }, 0, dst, 0);
+ 	}
+ 	else {
+-		if (show_setting==1) GFX_blitButtonGroup((char*[]){ BRIGHTNESS_BUTTON_LABEL,"BRIGHTNESS",  NULL }, 0, dst, 0);
+-		else GFX_blitButtonGroup((char*[]){ "MENU","BRIGHTNESS",  NULL }, 0, dst, 0);
++		if (show_setting==1) GFX_blitButtonGroup((char*[]){ BRIGHTNESS_BUTTON_LABEL,"ЯРКОСТЬ",  NULL }, 0, dst, 0);
++		else GFX_blitButtonGroup((char*[]){ "MENU","ЯРКОСТЬ",  NULL }, 0, dst, 0);
+ 	}
+ 	
+ }
 @@ -1469,8 +1469,8 @@ void PWR_powerOff(void) {
  		gfx.screen = GFX_resize(w,h,p);
  		
@@ -14,9 +29,18 @@ index f15f619..1c60fc7 100644
  		// LOG_info("PWR_powerOff %s (%ix%i)\n", gfx.screen, gfx.screen->w, gfx.screen->h);
  		
 diff --git a/workspace/all/common/defines.h b/workspace/all/common/defines.h
-index 53b782f..7b5c8e8 100644
+index 53b782f..e84549b 100644
 --- a/workspace/all/common/defines.h
 +++ b/workspace/all/common/defines.h
+@@ -14,7 +14,7 @@
+ #define ROOT_SYSTEM_PATH SDCARD_PATH "/.system/"
+ #define SYSTEM_PATH SDCARD_PATH "/.system/" PLATFORM
+ #define RES_PATH SDCARD_PATH "/.system/res"
+-#define FONT_PATH RES_PATH "/BPreplayBold-unhinted.otf"
++#define FONT_PATH RES_PATH "/MPLUSRounded1c-ExtraBold.ttf"
+ #define USERDATA_PATH SDCARD_PATH "/.userdata/" PLATFORM
+ #define SHARED_USERDATA_PATH SDCARD_PATH "/.userdata/shared"
+ #define PAKS_PATH SYSTEM_PATH "/paks"
 @@ -23,7 +23,7 @@
  #define AUTO_RESUME_PATH SHARED_USERDATA_PATH "/.minui/auto_resume.txt"
  #define AUTO_RESUME_SLOT 9
@@ -26,10 +50,54 @@ index 53b782f..7b5c8e8 100644
  #define COLLECTIONS_PATH SDCARD_PATH "/Collections"
  
  #define LAST_PATH "/tmp/last.txt" // transient
+@@ -64,7 +64,7 @@
+ 
+ #define FONT_LARGE 16 	// menu
+ #define FONT_MEDIUM 14 	// single char button label
+-#define FONT_SMALL 12 	// button hint
++#define FONT_SMALL 11 	// button hint
+ #define FONT_TINY 10  	// multi char button label
+ 
+ ///////////////////////////////
 diff --git a/workspace/all/minarch/minarch.c b/workspace/all/minarch/minarch.c
-index 78bffae..3db7f29 100644
+index 78bffae..e4ce8fa 100644
 --- a/workspace/all/minarch/minarch.c
 +++ b/workspace/all/minarch/minarch.c
+@@ -2468,11 +2468,11 @@ static struct {
+ 	.preview_exists = 0,
+ 	
+ 	.items = {
+-		[ITEM_CONT] = "Continue",
+-		[ITEM_SAVE] = "Save",
+-		[ITEM_LOAD] = "Load",
+-		[ITEM_OPTS] = "Options",
+-		[ITEM_QUIT] = "Quit",
++		[ITEM_CONT] = "Продолжить",
++		[ITEM_SAVE] = "Сохранить",
++		[ITEM_LOAD] = "Загрузить",
++		[ITEM_OPTS] = "Опции",
++		[ITEM_QUIT] = "Выход",
+ 	}
+ };
+ 
+@@ -2488,7 +2488,7 @@ void Menu_init(void) {
+ 
+ 	sprintf(menu.slot_path, "%s/%s.txt", menu.minui_dir, game.name);
+ 	
+-	if (simple_mode) menu.items[ITEM_OPTS] = "Reset";
++	if (simple_mode) menu.items[ITEM_OPTS] = "Сбросить игру";
+ 	
+ 	if (game.m3u_path[0]) {
+ 		char* tmp;
+@@ -2915,7 +2915,7 @@ static int OptionSaveChanges_onConfirm(MenuList* list, int i) {
+ 			break;
+ 		}
+ 	}
+-	Menu_message(message, (char*[]){ "A","OKAY", NULL });
++	Menu_message(message, (char*[]){ "A","ОКЕЙ", NULL });
+ 	OptionSaveChanges_updateDesc();
+ 	return MENU_CALLBACK_EXIT;
+ }
 @@ -3754,8 +3754,8 @@ static void Menu_loop(void) {
  			SDL_FreeSurface(text);
  			
@@ -53,9 +121,21 @@ index 78bffae..3db7f29 100644
  				
  				// pagination
 diff --git a/workspace/all/minui/minui.c b/workspace/all/minui/minui.c
-index 6e34ba9..8d82ad6 100644
+index 6e34ba9..678e469 100644
 --- a/workspace/all/minui/minui.c
 +++ b/workspace/all/minui/minui.c
+@@ -1397,9 +1397,9 @@ int main (int argc, char *argv[]) {
+ 				
+ 				// buttons (duped and trimmed from below)
+ 				if (show_setting && !GetHDMI()) GFX_blitHardwareHints(screen, show_setting);
+-				else GFX_blitButtonGroup((char*[]){ BTN_SLEEP==BTN_POWER?"POWER":"MENU","SLEEP",  NULL }, 0, screen, 0);
++				else GFX_blitButtonGroup((char*[]){ BTN_SLEEP==BTN_POWER?"POWER":"MENU","СОН",  NULL }, 0, screen, 0);
+ 				
+-				GFX_blitButtonGroup((char*[]){ "B","BACK",  NULL }, 0, screen, 1);
++				GFX_blitButtonGroup((char*[]){ "B","НАЗАД",  NULL }, 0, screen, 1);
+ 			}
+ 			else {
+ 				// list
 @@ -1461,28 +1461,28 @@ int main (int argc, char *argv[]) {
  				}
  				else {
