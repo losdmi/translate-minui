@@ -86,5 +86,6 @@ func buildJSON(phrases []string) ([]byte, error) {
 }
 
 func writeJSONToFile(phrasesJSON []byte) error {
-	return os.WriteFile(rootDir+"/translations/template.json", phrasesJSON, 0644)
+	bytes := append(phrasesJSON, []byte("\n")...)
+	return os.WriteFile(rootDir+"/translations/template.json", bytes, 0644)
 }

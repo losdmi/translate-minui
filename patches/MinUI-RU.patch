@@ -1,3 +1,84 @@
+diff --git a/skeleton/SYSTEM/rg35xx/paks/Emus/FC.pak/default.cfg b/skeleton/SYSTEM/rg35xx/paks/Emus/FC.pak/default.cfg
+index ac27532..bbecedd 100644
+--- a/skeleton/SYSTEM/rg35xx/paks/Emus/FC.pak/default.cfg
++++ b/skeleton/SYSTEM/rg35xx/paks/Emus/FC.pak/default.cfg
+@@ -12,8 +12,8 @@ bind Select = SELECT
+ bind Start = START
+ bind A Button = A
+ bind B Button = B
+-bind A Turbo = NONE:X
+-bind B Turbo = NONE:Y
++bind A Turbo = X
++bind B Turbo = Y
+ bind Change Disk = NONE:L1
+ bind Insert Disk = NONE:R1
+ bind Insert Coin = NONE:R2
+diff --git a/skeleton/SYSTEM/rg35xx/paks/Emus/GB.pak/default.cfg b/skeleton/SYSTEM/rg35xx/paks/Emus/GB.pak/default.cfg
+index a5ec628..c37075a 100644
+--- a/skeleton/SYSTEM/rg35xx/paks/Emus/GB.pak/default.cfg
++++ b/skeleton/SYSTEM/rg35xx/paks/Emus/GB.pak/default.cfg
+@@ -14,7 +14,7 @@ bind Select = SELECT
+ bind Start = START
+ bind A Button = A
+ bind B Button = B
+-bind A Turbo = NONE:X
+-bind B Turbo = NONE:Y
++bind A Turbo = X
++bind B Turbo = Y
+ bind Prev. Palette = NONE:L1
+ bind Next Palette = NONE:R1
+diff --git a/skeleton/SYSTEM/rg35xx/paks/Emus/GBA.pak/default.cfg b/skeleton/SYSTEM/rg35xx/paks/Emus/GBA.pak/default.cfg
+index ea76e21..aaed15c 100644
+--- a/skeleton/SYSTEM/rg35xx/paks/Emus/GBA.pak/default.cfg
++++ b/skeleton/SYSTEM/rg35xx/paks/Emus/GBA.pak/default.cfg
+@@ -8,7 +8,7 @@ bind Select = SELECT
+ bind Start = START
+ bind A Button = A
+ bind B Button = B
+-bind A Turbo = NONE:X
+-bind B Turbo = NONE:Y
++bind A Turbo = X
++bind B Turbo = Y
+ bind L Button = L1
+ bind R Button = R1
+diff --git a/skeleton/SYSTEM/rg35xx/paks/Emus/GBC.pak/default.cfg b/skeleton/SYSTEM/rg35xx/paks/Emus/GBC.pak/default.cfg
+index c854f88..f2b271c 100644
+--- a/skeleton/SYSTEM/rg35xx/paks/Emus/GBC.pak/default.cfg
++++ b/skeleton/SYSTEM/rg35xx/paks/Emus/GBC.pak/default.cfg
+@@ -11,7 +11,7 @@ bind Select = SELECT
+ bind Start = START
+ bind A Button = A
+ bind B Button = B
+-bind A Turbo = NONE:X
+-bind B Turbo = NONE:Y
++bind A Turbo = X
++bind B Turbo = Y
+ bind Prev. Palette = NONE:L1
+ bind Next Palette = NONE:R1
+diff --git a/skeleton/SYSTEM/rg35xx/paks/Emus/MD.pak/default.cfg b/skeleton/SYSTEM/rg35xx/paks/Emus/MD.pak/default.cfg
+index dac4089..a08b686 100644
+--- a/skeleton/SYSTEM/rg35xx/paks/Emus/MD.pak/default.cfg
++++ b/skeleton/SYSTEM/rg35xx/paks/Emus/MD.pak/default.cfg
+@@ -3,6 +3,7 @@
+ -picodrive_smsfm = off
+ -picodrive_smsmapper = Auto
+ -picodrive_ggghost = off
++-picodrive_input1 = 6 button pad
+ 
+ bind Up = UP
+ bind Down = DOWN
+@@ -11,8 +12,8 @@ bind Right = RIGHT
+ bind Mode = SELECT
+ bind Start = START
+ bind A Button = Y
+-bind B Button = X:B
++bind B Button = B
+ bind C Button = A
+-bind X Button = B:L1
+-bind Y Button = L1:X
++bind X Button = L1
++bind Y Button = X
+ bind Z Button = R1
 diff --git a/workspace/all/common/api.c b/workspace/all/common/api.c
 index f15f619..608274b 100644
 --- a/workspace/all/common/api.c
@@ -29,7 +110,7 @@ index f15f619..608274b 100644
  		// LOG_info("PWR_powerOff %s (%ix%i)\n", gfx.screen, gfx.screen->w, gfx.screen->h);
  		
 diff --git a/workspace/all/common/defines.h b/workspace/all/common/defines.h
-index 53b782f..e84549b 100644
+index 53b782f..4d555c2 100644
 --- a/workspace/all/common/defines.h
 +++ b/workspace/all/common/defines.h
 @@ -14,7 +14,7 @@
