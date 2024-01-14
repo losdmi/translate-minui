@@ -6,6 +6,10 @@ ifeq ($(LANG),)
 LANG := RU
 endif
 
+ifeq ($(IMG_NAME),)
+IMG_NAME := SD
+endif
+
 MINUI_PATH := ./MinUI
 TRANSLATION_PATCH_PATH := patches/MinUI-$(LANG).patch
 
@@ -74,3 +78,10 @@ toolchains: clone-toolchains patch-toolchains
 clone-toolchains: $(foreach PLATFORM,$(PLATFORMS),$(MINUI_PATH)/toolchains/$(PLATFORM)-toolchain)
 patch-toolchains: $(foreach PLATFORM,$(PLATFORMS),$(MINUI_PATH)/toolchains/$(PLATFORM)-toolchain/.patched)
 # build-toolchains: $(foreach PLATFORM,$(PLATFORMS),$(MINUI_PATH)/toolchains/$(PLATFORM)-toolchain/.build)
+
+img-dump:
+	sudo diskutil unmountDisk /dev/disk4 && sudo dd if=/dev/disk4 status=progress conv=sync,noerror bs=4m | gzip -c > $(IMG_NAME).img.gz
+
+img-write:
+	sudo diskutil unmountDisk /dev/disk4 && gunzip -c $(IMG_NAME).img.gz | sudo dd of=/dev/disk4 status=progress bs=4m
+
